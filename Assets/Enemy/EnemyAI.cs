@@ -6,23 +6,27 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField] Transform target;
     [SerializeField] float chaseRange = 10f;
+    [SerializeField] float turnSpeed = 4f;
 
+    GameObject target;
     NavMeshAgent navMeshAgent;
+    Animator animator;
     float distanceToTarget = Mathf.Infinity;
     bool isProvoked = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        target = GameObject.FindGameObjectWithTag("Player");
         navMeshAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        distanceToTarget = Vector3.Distance(target.position, transform.position);
+        distanceToTarget = Vector3.Distance(target.transform.position, transform.position);
         if (isProvoked)
         {
             EngageTarget();
@@ -43,16 +47,26 @@ public class EnemyAI : MonoBehaviour
         {
             AttackTarget();
         }
+
     }
     void ChaseTarget()
     {
-        Debug.Log("Chasing target");
-        navMeshAgent.SetDestination(target.position);
+        animator.SetBool("attack", false);
+        animator.SetTrigger("move");
+        navMeshAgent.SetDestination(target.transform.position);
     }
 
     void AttackTarget()
     {
-        Debug.Log("Attack target");
+        animator.SetBool("attack", true);
+        FaceTarget();
+    }
+
+    void FaceTarget()
+    {
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
     }
 
     private void OnDrawGizmosSelected()
