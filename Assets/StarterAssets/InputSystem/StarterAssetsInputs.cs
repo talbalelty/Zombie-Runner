@@ -13,7 +13,8 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
-		public bool fire1;
+		public bool fire;
+		public bool aimDownSight;
 		
 
 		[Header("Movement Settings")]
@@ -49,10 +50,15 @@ namespace StarterAssets
 			SprintInput(value.isPressed);
 		}
 
-		public void OnFire1(InputValue value)
+		public void OnFire(InputValue value)
 		{
-			Fire1Input(value.isPressed);
+			FireInput(value.isPressed);
 		}
+
+		public void OnAimDownSight(InputValue value)
+        {
+			AimDownSightInput(value.isPressed);
+        }
 #else
 	// old input sys if we do decide to have it (most likely wont)...
 #endif
@@ -78,9 +84,14 @@ namespace StarterAssets
 			sprint = newSprintState;
 		}
 
-		public void Fire1Input(bool newFire1State)
+		public void FireInput(bool newFireState)
 		{
-			fire1 = newFire1State;
+			fire = newFireState;
+		}
+
+		public void AimDownSightInput(bool newAimState)
+		{
+			aimDownSight = newAimState;
 		}
 
 #if !UNITY_IOS || !UNITY_ANDROID

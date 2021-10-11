@@ -38,12 +38,20 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Fire1",
+                    "name": "Fire",
                     "type": "Button",
                     "id": "5c428fb3-743e-4214-8313-930e4296f095",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "AimDownSight",
+                    "type": "Button",
+                    "id": "51535662-943a-44b9-ba99-8c2dc85550d5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
                 }
             ],
             "bindings": [
@@ -230,7 +238,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "Fire1",
+                    "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -241,7 +249,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Fire1",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6f17f337-fdb3-4165-8d47-c8acdc9e24ed",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "AimDownSight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8daaf254-dc47-4cd2-9216-e7b404a95cd1",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "AimDownSight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
