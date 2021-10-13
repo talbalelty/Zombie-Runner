@@ -1,16 +1,21 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using StarterAssets;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] Camera FPCamera;
-    [SerializeField] ParticleSystem hitVFX;
+    [Header("Weapon Stats")]
+    [Tooltip("Weapon effective range")]
     [SerializeField] float range = 100f;
+    [Tooltip("Weapon bullet damage")]
     [SerializeField] float weaponDamage = 25f;
+
+    [Header("Weapon Assets")]
+    [Tooltip("Partile effect on bullet impact")]
+    [SerializeField] ParticleSystem hitVFX;
+
+    [Header("Player Assets")]
+    [Tooltip("Player Main Camera with CinemachineBrain")]
+    [SerializeField] Camera FPCamera;
     [SerializeField] Ammo ammoSlot;
 
     StarterAssetsInputs _input;
@@ -65,6 +70,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    // Play particle system impact
     void HitImpact(RaycastHit hit)
     {
         ParticleSystem impact = Instantiate(hitVFX, hit.point, Quaternion.LookRotation(hit.normal));

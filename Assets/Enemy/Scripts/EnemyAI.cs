@@ -1,12 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+// Control the enemy's behaviour
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField] float chaseRange = 10f;
+    [Header("Behaviour")]
+    [Tooltip("Start chase if Player is inside the enemy's radius")]
+    [SerializeField] float chaseRange = 15f;
+    [Header("Movement")]
+    [Tooltip("Enemy's rotation speed when attacking")]
     [SerializeField] float turnSpeed = 4f;
 
     GameObject target;
@@ -37,6 +39,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    // EnemyHealth broadcast function when health drops
     public void OnDamageTaken()
     {
         isProvoked = true;
@@ -67,6 +70,7 @@ public class EnemyAI : MonoBehaviour
         FaceTarget();
     }
 
+    // NavMeshAgent no longer controls rotation therefore FaceTarget is called
     void FaceTarget()
     {
         Vector3 direction = (target.transform.position - transform.position).normalized;

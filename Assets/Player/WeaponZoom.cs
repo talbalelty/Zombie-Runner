@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Cinemachine;
 using StarterAssets;
+using UnityEngine;
 
 public class WeaponZoom : MonoBehaviour
 {
+    [Header("Field of View Configuration")]
     [SerializeField] float zoomOutFOV = 60f;
     [SerializeField] float zoomInFOV = 20f;
     [SerializeField] float zoomOutSensitivity = 1f;
@@ -32,6 +30,7 @@ public class WeaponZoom : MonoBehaviour
 
     void AimDownSight()
     {
+        // Press and Release in new input system
         if (_input.aimDownSight)
         {
             vFPCamera.m_Lens.FieldOfView = zoomInFOV;

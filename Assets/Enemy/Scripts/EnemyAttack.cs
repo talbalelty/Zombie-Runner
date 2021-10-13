@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
+    [Tooltip("The amount of damage with each attack")]
     [SerializeField] float damage = 25f;
-    
+
     GameObject target;
 
     // Start is called before the first frame update
@@ -17,7 +16,7 @@ public class EnemyAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void AttackHitEvent()
