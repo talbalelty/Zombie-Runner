@@ -91,9 +91,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2337074158996965286}
   - component: {fileID: 340375681}
+  - component: {fileID: 4056801217598090211}
   m_Layer: 0
   m_Name: Pistol
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,11 +127,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34759c7036e69d4693d9af12d7ba8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FPCamera: {fileID: 0}
-  hitVFX: {fileID: 6407784103628510800, guid: 2c2d67ad48bc8a54d85262e69beead9a, type: 3}
   range: 50
   weaponDamage: 25
+  hitVFX: {fileID: 6407784103628510800, guid: 2c2d67ad48bc8a54d85262e69beead9a, type: 3}
+  FPCamera: {fileID: 0}
   ammoSlot: {fileID: 0}
+--- !u!65 &4056801217598090211
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337074158997199750}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.19526124, y: 0.26061457, z: 0.41201636}
+  m_Center: {x: -0.0020124875, y: -0.0080752075, z: 0.08573054}
 --- !u!1001 &4193949794468341540
 PrefabInstance:
   m_ObjectHideFlags: 0

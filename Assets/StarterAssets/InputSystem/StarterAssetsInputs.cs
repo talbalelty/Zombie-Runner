@@ -15,7 +15,8 @@ namespace StarterAssets
 		public bool sprint;
 		public bool fire;
 		public bool aimDownSight;
-		
+		public bool weaponPickup;
+
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -59,6 +60,12 @@ namespace StarterAssets
         {
 			AimDownSightInput(value.isPressed);
         }
+
+		public void OnWeaponPickup(InputValue value)
+        {
+			WeaponPickup(value.isPressed);
+        }
+
 #else
 	// old input sys if we do decide to have it (most likely wont)...
 #endif
@@ -92,6 +99,11 @@ namespace StarterAssets
 		public void AimDownSightInput(bool newAimState)
 		{
 			aimDownSight = newAimState;
+		}
+
+		private void WeaponPickup(bool newPickupState)
+		{
+			weaponPickup = newPickupState;
 		}
 
 #if !UNITY_IOS || !UNITY_ANDROID
