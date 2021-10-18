@@ -6,9 +6,10 @@ public class WeaponSwitcher : MonoBehaviour
 {
     [SerializeField] Camera FPCamera;
     [SerializeField] TextMeshProUGUI pickupText;
-    [SerializeField] float pickupRange = 4f;
+    [SerializeField] float pickupRange = 2f;
 
     StarterAssetsInputs _input;
+    int layerMask = 1 << 6;
 
     // Start is called before the first frame update
     void Start()
@@ -24,37 +25,18 @@ public class WeaponSwitcher : MonoBehaviour
 
     void ProcessPickup()
     {
-        GameObject newWeapon = ProcessRaycast();
-        if (newWeapon != null)
+        pickupText.enabled = false;
+        if (Physics.Raycast(FPCamera.transform.position, FPCamera.transform.forward, out RaycastHit hit, pickupRange))
         {
-            if (newWeapon.CompareTag("Weapon"))
+            if (hit.transform.gameObject.CompareTag("Weapon"))
             {
                 pickupText.enabled = true;
                 if (_input.weaponPickup)
                 {
-                    SetActiveWeapon(newWeapon);
+                    SetActiveWeapon(hit.transform.gameObject);
                 }
             }
-            else
-            {
-                pickupText.enabled = false;
-            }
         }
-        else
-        {
-            pickupText.enabled = false;
-        }
-    }
-
-    GameObject ProcessRaycast()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(FPCamera.transform.position, FPCamera.transform.forward, out hit, pickupRange))
-        {
-            return hit.transform.gameObject;
-        }
-
-        return null;
     }
 
     void SetActiveWeapon(GameObject newWeapon)

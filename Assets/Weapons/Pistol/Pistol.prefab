@@ -200,6 +200,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Muzzle Flash VFX
       objectReference: {fileID: 0}
+    - target: {fileID: 5487486203665347832, guid: e800d922341df2447b5ece45623a8c69, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6303209578041324052, guid: e800d922341df2447b5ece45623a8c69, type: 3}
       propertyPath: ShapeModule.m_Rotation.y
       value: 0
