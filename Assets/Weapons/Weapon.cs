@@ -36,6 +36,7 @@ public class Weapon : MonoBehaviour
         {
             Shoot();
         }
+        _input.fire = false;
     }
 
     void Shoot()
@@ -45,7 +46,6 @@ public class Weapon : MonoBehaviour
             ammoSlot.ReduceAmmoAmount();
             PlayMuzzleFlash();
             ProcessRaycast();
-            _input.fire = false;
         }
     }
 

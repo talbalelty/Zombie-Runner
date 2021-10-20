@@ -9,16 +9,15 @@ public class WeaponZoom : MonoBehaviour
     [SerializeField] float zoomInFOV = 20f;
     [SerializeField] float zoomOutSensitivity = 1f;
     [SerializeField] float zoomInSensitivity = 0.3f;
+    [SerializeField] CinemachineVirtualCamera vFPCamera;
 
     FirstPersonController FPcontroller;
-    CinemachineVirtualCamera vFPCamera;
     StarterAssetsInputs _input;
 
     // Start is called before the first frame update
     void Start()
     {
         _input = GetComponent<StarterAssetsInputs>();
-        vFPCamera = GetComponentInChildren<CinemachineVirtualCamera>();
         FPcontroller = GetComponent<FirstPersonController>();
     }
 

@@ -7,17 +7,16 @@ using UnityEngine;
 public class ThrowGrenade : MonoBehaviour
 {
     [SerializeField] GameObject grenade;
-    [SerializeField] float throwForce = 2f; 
+    [SerializeField] float throwForce = 10f; 
 
-    Ammo ammo;
-    StarterAssetsInputs _input;
+    [SerializeField] Ammo ammo;
+    [SerializeField] StarterAssetsInputs _input;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        ammo = GetComponentInParent<Ammo>();
-        _input = GetComponentInParent<StarterAssetsInputs>();
+
     }
 
     // Update is called once per frame
@@ -35,7 +34,7 @@ public class ThrowGrenade : MonoBehaviour
         if (ammo.GetGrenadeAmmoAmount() > 0)
         {
             ammo.ReduceGrenadeAmmoAmount();
-            GameObject thrownGrenade = Instantiate(grenade, transform.position, transform.rotation);
+            GameObject thrownGrenade = Instantiate(grenade, transform.position, Quaternion.identity);
             Rigidbody rb = thrownGrenade.GetComponent<Rigidbody>();
             rb.AddRelativeForce(transform.forward * throwForce, ForceMode.Impulse);
         }
