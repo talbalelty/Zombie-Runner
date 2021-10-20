@@ -1,58 +1,79 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using StarterAssets;
-using TMPro;
 using UnityEngine;
 
 public class WeaponSwitcher : MonoBehaviour
 {
-    [SerializeField] Camera FPCamera;
-    [SerializeField] TextMeshProUGUI pickupText;
-    [SerializeField] float pickupRange = 2f;
-
+    int currentWeaponIndex = -1;
     StarterAssetsInputs _input;
-    int layerMask = 1 << 6;
+    Weapon[] weapons;
 
     // Start is called before the first frame update
     void Start()
     {
         _input = GetComponentInParent<StarterAssetsInputs>();
+        weapons = GetComponentsInChildren<Weapon>(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        ProcessPickup();
+        ProcessScroll();
+        if (currentWeaponIndex != _input.selectedWeaponIndex)
+        {
+            SetActiveWeapon();
+        }
     }
 
-    void ProcessPickup()
+    void ProcessScroll()
     {
-        pickupText.enabled = false;
-        if (Physics.Raycast(FPCamera.transform.position, FPCamera.transform.forward, out RaycastHit hit, pickupRange))
+        if (_input.scroll != 0)
         {
-            if (hit.transform.gameObject.CompareTag("Weapon"))
+            int loopSafeguard = 0;
+            int cycleToWeaponIndex = NewIndexModuloWeapons(currentWeaponIndex);
+            while (loopSafeguard < weapons.Length)
             {
-                pickupText.enabled = true;
-                if (_input.weaponPickup)
+                if (weapons[cycleToWeaponIndex].PickedUp)
                 {
-                    SetActiveWeapon(hit.transform.gameObject);
+                    _input.selectedWeaponIndex = cycleToWeaponIndex;
+                    return;
                 }
+                else if (currentWeaponIndex == cycleToWeaponIndex)
+                {
+                    return;
+                }
+                cycleToWeaponIndex = NewIndexModuloWeapons(cycleToWeaponIndex);
+                loopSafeguard++;
             }
         }
     }
 
-    void SetActiveWeapon(GameObject newWeapon)
+    int NewIndexModuloWeapons(int index)
     {
-        foreach (Transform weapon in transform)
+        int newIndex = (index + _input.scroll) % weapons.Length;
+        if (newIndex < 0)
         {
-            if (newWeapon.name.Equals(weapon.name))
-            {
-                weapon.gameObject.SetActive(true);
-                Destroy(newWeapon);
-            }
-            else
-            {
-                weapon.gameObject.SetActive(false);
-            }
+            newIndex += weapons.Length;
         }
+        return newIndex;
     }
 
+    void SetActiveWeapon()
+    {
+        if (weapons[_input.selectedWeaponIndex].PickedUp)
+        {
+            if (0 <= currentWeaponIndex && currentWeaponIndex < weapons.Length)
+            {
+                weapons[currentWeaponIndex].gameObject.SetActive(false);
+            }
+            weapons[_input.selectedWeaponIndex].gameObject.SetActive(true);
+            currentWeaponIndex = _input.selectedWeaponIndex;
+        }
+        else
+        {
+            _input.selectedWeaponIndex = currentWeaponIndex;
+        }
+    }
 }

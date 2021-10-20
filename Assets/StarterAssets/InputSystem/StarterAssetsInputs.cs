@@ -16,6 +16,9 @@ namespace StarterAssets
 		public bool fire;
 		public bool aimDownSight;
 		public bool weaponPickup;
+		public bool throwGrenade;
+		public int selectedWeaponIndex = -1;
+		public int scroll;
 
 
 		[Header("Movement Settings")]
@@ -66,6 +69,32 @@ namespace StarterAssets
 			WeaponPickup(value.isPressed);
         }
 
+		public void OnThrowGrenade(InputValue value)
+        {
+			ThrowGrenade(value.isPressed);
+        }
+
+		public void OnPrimaryWeapon(InputValue value)
+        {
+			PrimaryWeapon(value.isPressed);
+        }
+
+		public void OnSecondaryWeapon(InputValue value)
+		{
+			SecondaryWeapon(value.isPressed);
+		}
+
+		public void OnSpecialWeapon(InputValue value)
+		{
+			SpecialWeapon(value.isPressed);
+		}
+
+		public void OnCycleWeapons(InputValue value)
+		{
+			CycleWeapons(value.Get<Vector2>());
+		}
+
+
 #else
 	// old input sys if we do decide to have it (most likely wont)...
 #endif
@@ -101,9 +130,43 @@ namespace StarterAssets
 			aimDownSight = newAimState;
 		}
 
-		private void WeaponPickup(bool newPickupState)
+		public void WeaponPickup(bool newPickupState)
 		{
 			weaponPickup = newPickupState;
+		}
+
+		public void ThrowGrenade(bool newThrowState)
+		{
+			throwGrenade = newThrowState;
+		}
+
+		public void PrimaryWeapon(bool newSelectedWeaponState)
+		{
+            if (newSelectedWeaponState)
+            {
+				selectedWeaponIndex = 0;
+            }
+		}
+
+		public void SecondaryWeapon(bool newSelectedWeaponState)
+		{
+			if (newSelectedWeaponState)
+			{
+				selectedWeaponIndex = 1;
+			}
+		}
+
+		public void SpecialWeapon(bool newSelectedWeaponState)
+		{
+			if (newSelectedWeaponState)
+			{
+				selectedWeaponIndex = 2;
+			}
+		}
+
+		public void CycleWeapons(Vector2 newCycleState)
+		{
+			scroll = Mathf.RoundToInt(newCycleState.normalized.y);
 		}
 
 #if !UNITY_IOS || !UNITY_ANDROID

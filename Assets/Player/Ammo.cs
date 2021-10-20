@@ -5,6 +5,8 @@ using UnityEngine;
 public class Ammo : MonoBehaviour
 {
     [SerializeField] int ammoAmount = 10;
+    [SerializeField] int grenadeAmmoAmount = 1;
+    [SerializeField] int maxGrenadeAmmoAmount = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -26,5 +28,26 @@ public class Ammo : MonoBehaviour
     public void ReduceAmmoAmount()
     {
         ammoAmount--;
+    }
+
+    public int GetGrenadeAmmoAmount()
+    {
+        return grenadeAmmoAmount;
+    }
+
+    public void ReduceGrenadeAmmoAmount()
+    {
+        if (grenadeAmmoAmount > 0)
+        {
+            grenadeAmmoAmount--;
+        }
+    }
+
+    public void IncreaseGrenadeAmmoAmount()
+    {
+        if (grenadeAmmoAmount < maxGrenadeAmmoAmount)
+        {
+            grenadeAmmoAmount++;
+        }
     }
 }
