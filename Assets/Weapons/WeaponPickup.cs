@@ -10,12 +10,14 @@ public class WeaponPickup : MonoBehaviour
 
     StarterAssetsInputs _input;
     Weapon[] weapons;
+    Ammo ammo;
 
     // Start is called before the first frame update
     void Start()
     {
         _input = GetComponentInParent<StarterAssetsInputs>();
         weapons = GetComponentsInChildren<Weapon>(true);
+        ammo = GetComponentInParent<Ammo>();
     }
 
     // Update is called once per frame
@@ -34,7 +36,14 @@ public class WeaponPickup : MonoBehaviour
                 pickupText.enabled = true;
                 if (_input.weaponPickup)
                 {
-                    SetActiveWeapon(hit.transform.gameObject);
+                    if (hit.transform.gameObject.TryGetComponent<ExplodeGrenade>(out ExplodeGrenade grenade))
+                    {
+                        ammo.IncreaseGrenadeAmmoAmount(grenade);
+                    }
+                    else
+                    {
+                        SetActiveWeapon(hit.transform.gameObject);
+                    }
                 }
             }
         }

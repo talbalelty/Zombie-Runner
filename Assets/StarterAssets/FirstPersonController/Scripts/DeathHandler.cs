@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 // Show Game Over screen when player dies
 public class DeathHandler : MonoBehaviour

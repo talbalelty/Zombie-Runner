@@ -43,11 +43,12 @@ public class Ammo : MonoBehaviour
         }
     }
 
-    public void IncreaseGrenadeAmmoAmount()
+    public void IncreaseGrenadeAmmoAmount(ExplodeGrenade grenade)
     {
         if (grenadeAmmoAmount < maxGrenadeAmmoAmount)
         {
             grenadeAmmoAmount++;
+            Destroy(grenade.gameObject);
         }
     }
 }

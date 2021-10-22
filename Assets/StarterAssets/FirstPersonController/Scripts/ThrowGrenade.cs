@@ -37,6 +37,7 @@ public class ThrowGrenade : MonoBehaviour
             GameObject thrownGrenade = Instantiate(grenade, transform.position, Quaternion.identity);
             Rigidbody rb = thrownGrenade.GetComponent<Rigidbody>();
             rb.AddRelativeForce(transform.forward * throwForce, ForceMode.Impulse);
+            thrownGrenade.tag = "Untagged";
         }
     }
 }
