@@ -52,6 +52,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(behavior=2)"
+                },
+                {
+                    "name": "WeaponPickup",
+                    "type": "Button",
+                    "id": "645af37e-600c-4cf5-8f4e-4252d531a0c3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
                 }
             ],
             "bindings": [
@@ -272,6 +280,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "AimDownSight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ae940114-2c4b-460f-8232-489773320466",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "WeaponPickup",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

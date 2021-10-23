@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
-// Control the enemy's behaviour
 public class EnemyAI : MonoBehaviour
 {
     [Header("Behaviour")]
@@ -12,61 +12,121 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] float turnSpeed = 4f;
 
     GameObject target;
+    GameObject enemyRifle;
     NavMeshAgent navMeshAgent;
     Animator animator;
     float distanceToTarget = Mathf.Infinity;
-    bool isProvoked = false;
 
+    bool isProvoked = false;
+    bool isHoldingRifle = false;
     // Start is called before the first frame update
     void Start()
     {
+        enemyRifle = GameObject.FindGameObjectWithTag("Enemy Rifle");
         target = GameObject.FindGameObjectWithTag("Player");
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        animator.SetInteger("state", 1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        distanceToTarget = Vector3.Distance(target.transform.position, transform.position);
-        if (isProvoked)
+        if (isHoldingRifle)
         {
-            EngageTarget();
+            distanceToTarget = Vector3.Distance(target.transform.position, transform.position);
+            if (isProvoked)
+            {
+                EngageTarget();
+            }
+            /*else if (distanceToTarget <= chaseRange)
+            {
+                isProvoked = true;
+            }*/
         }
-        else if (distanceToTarget <= chaseRange)
+        else
         {
-            isProvoked = true;
+            distanceToTarget = Vector3.Distance(enemyRifle.transform.position, transform.position);
+            GetRifle();
         }
+
     }
 
     // EnemyHealth broadcast function when health drops
     public void OnDamageTaken()
     {
-        isProvoked = true;
+        isProvoked = false;
+        StartCoroutine(playDamageAnimation());
     }
 
+    IEnumerator playDamageAnimation()
+    {
+        animator.SetInteger("state", 2);
+        navMeshAgent.isStopped = true;
+        yield return new WaitForSeconds(0.5f);
+        navMeshAgent.isStopped = false;
+        animator.SetInteger("state", 7);
+        isProvoked = true;
+
+    }
+
+    public void OnDeath()
+    {
+        animator.SetInteger("state", 4);
+        navMeshAgent.isStopped = true;
+        Destroy(gameObject, 10f);
+    }
     void EngageTarget()
     {
-        if (distanceToTarget >= navMeshAgent.stoppingDistance)
+        if (distanceToTarget > 5)
         {
+            Debug.Log("Chase target");
             ChaseTarget();
+            
         }
-        if (distanceToTarget <= navMeshAgent.stoppingDistance)
+
+        if (distanceToTarget <= 5)
         {
             AttackTarget();
         }
 
     }
+
+    IEnumerator playPickUpWeapon()
+    {
+        animator.SetInteger("state", 6);
+        yield return new WaitForSeconds(1f);
+        GetComponentInChildren<Weapon>(true).gameObject.SetActive(true);
+        Destroy(enemyRifle);
+        animator.SetInteger("state", 7);
+        navMeshAgent.SetDestination(target.transform.position);
+        isHoldingRifle = true;
+        isProvoked = true;
+    }
+    public void GetRifle()
+    {
+        if (distanceToTarget <= 3)
+        {
+            StartCoroutine(playPickUpWeapon());
+        }
+        else
+        {
+            navMeshAgent.SetDestination(enemyRifle.transform.position);
+        }
+
+
+    }
     void ChaseTarget()
     {
-        animator.SetBool("attack", false);
-        animator.SetTrigger("move");
+        navMeshAgent.isStopped = false;
+        animator.SetInteger("state", 7);
         navMeshAgent.SetDestination(target.transform.position);
     }
 
     void AttackTarget()
     {
-        animator.SetBool("attack", true);
+        navMeshAgent.isStopped = true;
+        animator.SetInteger("state", 8);
         FaceTarget();
     }
 

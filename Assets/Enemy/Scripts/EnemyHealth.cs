@@ -27,7 +27,7 @@ public class EnemyHealth : MonoBehaviour
         health -= Mathf.Abs(damage);
         if (health <= 0)
         {
-            Destroy(gameObject);
+            BroadcastMessage("OnDeath");
         }
     }
 }
