@@ -19,6 +19,8 @@ public class EnemyAI : MonoBehaviour
 
     bool isProvoked = false;
     bool isHoldingRifle = false;
+    bool isAlive = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +37,7 @@ public class EnemyAI : MonoBehaviour
         if (isHoldingRifle)
         {
             distanceToTarget = Vector3.Distance(target.transform.position, transform.position);
-            if (isProvoked)
+            if (isProvoked && isAlive)
             {
                 EngageTarget();
             }
@@ -74,15 +76,17 @@ public class EnemyAI : MonoBehaviour
     {
         animator.SetInteger("state", 4);
         navMeshAgent.isStopped = true;
+        isProvoked = false;
+        isAlive = false;
+        GetComponentInChildren<Weapon>(true).gameObject.SetActive(false);
         Destroy(gameObject, 10f);
     }
+
     void EngageTarget()
     {
         if (distanceToTarget > 5)
         {
-            Debug.Log("Chase target");
             ChaseTarget();
-            
         }
 
         if (distanceToTarget <= 5)
@@ -95,7 +99,7 @@ public class EnemyAI : MonoBehaviour
     IEnumerator playPickUpWeapon()
     {
         animator.SetInteger("state", 6);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.8f);
         GetComponentInChildren<Weapon>(true).gameObject.SetActive(true);
         Destroy(enemyRifle);
         animator.SetInteger("state", 7);
