@@ -20,6 +20,7 @@ public class Weapon : MonoBehaviour
 
     StarterAssetsInputs _input;
     ParticleSystem muzzleFlash;
+    bool pickedUp;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +36,7 @@ public class Weapon : MonoBehaviour
         {
             Shoot();
         }
+        _input.fire = false;
     }
 
     void Shoot()
@@ -44,7 +46,6 @@ public class Weapon : MonoBehaviour
             ammoSlot.ReduceAmmoAmount();
             PlayMuzzleFlash();
             ProcessRaycast();
-            _input.fire = false;
         }
     }
 
@@ -75,6 +76,18 @@ public class Weapon : MonoBehaviour
     {
         ParticleSystem impact = Instantiate(hitVFX, hit.point, Quaternion.LookRotation(hit.normal));
         Destroy(impact.gameObject, impact.main.duration);
+    }
+
+    public bool PickedUp
+    {
+        get
+        {
+            return pickedUp;
+        }
+        set
+        {
+            pickedUp = value;
+        }
     }
 }
 

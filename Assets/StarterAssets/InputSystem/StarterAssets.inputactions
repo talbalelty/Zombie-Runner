@@ -60,6 +60,46 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(behavior=2)"
+                },
+                {
+                    "name": "ThrowGrenade",
+                    "type": "Button",
+                    "id": "6c807482-3203-4637-8882-6cd5ff040874",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "PrimaryWeapon",
+                    "type": "Button",
+                    "id": "757c421b-12eb-4baf-898c-0c74a854de44",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
+                },
+                {
+                    "name": "SecondaryWeapon",
+                    "type": "Button",
+                    "id": "f196f094-4890-42f2-832d-5500879162fa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
+                },
+                {
+                    "name": "SpecialWeapon",
+                    "type": "Button",
+                    "id": "757ed635-8ea3-4d45-b893-e9861447886c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
+                },
+                {
+                    "name": "CycleWeapons",
+                    "type": "Value",
+                    "id": "8091f278-9213-4a3c-a849-3f9258b8434c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
                 }
             ],
             "bindings": [
@@ -291,6 +331,61 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "WeaponPickup",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92422681-02b2-4d42-a470-46b68d0cb191",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "ThrowGrenade",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "62f26a11-b426-4314-af74-44ce1b3351f6",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "PrimaryWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "386d3bb5-1740-4061-8043-23c07fb91ca7",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "SecondaryWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "03acbfb8-cc89-431e-a585-06be932234b9",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "SpecialWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1d06c3d5-4c81-4807-96d7-59468f5bbc83",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "CycleWeapons",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
