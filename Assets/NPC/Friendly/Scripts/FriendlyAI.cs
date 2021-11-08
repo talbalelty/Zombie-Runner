@@ -19,12 +19,14 @@ public class FriendlyAI : MonoBehaviour
     NavMeshAgent navMeshAgent;
     Animator animator;
     GameObject closestWeapon;
+    Weapon activeWeapon;
     GameObject closestEnemy;
     float distanceToTarget = Mathf.Infinity;
 
     bool isProvoked = false;
     bool isHoldingRifle = false;
     bool isAlive = true;
+    bool fired = false;
 
 
     // Start is called before the first frame update
@@ -36,7 +38,7 @@ public class FriendlyAI : MonoBehaviour
 
         animator = GetComponent<Animator>();
         animator.SetInteger("state", 1);
-        
+
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -45,30 +47,51 @@ public class FriendlyAI : MonoBehaviour
     {
         if (isHoldingRifle)
         {
-            if (navMeshAgent.remainingDistance <= distanceToPlayer)
-            {
-                animator.SetInteger("state", 9);
-            }
-            else
-            {
-                navMeshAgent.stoppingDistance = distanceToPlayer;
-                navMeshAgent.SetDestination(player.transform.position);
-                animator.SetInteger("state", 7);
-                navMeshAgent.isStopped = false;
-            }
-
             closestEnemy = FindClosestObject(enemies);
-            distanceToTarget = Vector3.Distance(transform.position, closestEnemy.transform.position);
-            if (distanceToTarget <= attackRange)
+            if (closestEnemy != null)
             {
-                navMeshAgent.isStopped = true;
-                FaceTarget();
-                animator.SetInteger("state", 8);
+                distanceToTarget = Vector3.Distance(transform.position, closestEnemy.transform.position);
+                if (closestEnemy.GetComponent<EnemyAI>().IsAlive && distanceToTarget <= attackRange)
+                {
+                    navMeshAgent.isStopped = true;
+                    animator.SetInteger("state", 8);
+                    FaceTarget();
+                    AttackTarget();
+                }
+                else
+                {
+                    navMeshAgent.isStopped = false;
+                    navMeshAgent.SetDestination(player.transform.position);
+                    if (navMeshAgent.remainingDistance <= distanceToPlayer)
+                    {
+                        animator.SetInteger("state", 9);
+                    }
+                    else
+                    {
+                        animator.SetInteger("state", 7);
+                    }
+                }
             }
         }
         else if (navMeshAgent.remainingDistance <= 3f && !isHoldingRifle)
         {
             StartCoroutine(playPickUpWeapon());
+        }
+    }
+
+    void AttackTarget()
+    {
+        if (Mathf.FloorToInt(Time.realtimeSinceStartup) % 2 == 0)
+        {
+            if (!fired)
+            {
+                activeWeapon.Shoot();
+                fired = true;
+            }
+        }
+        else
+        {
+            fired = false;
         }
     }
 
@@ -83,10 +106,13 @@ public class FriendlyAI : MonoBehaviour
     {
         animator.SetInteger("state", 6);
         yield return new WaitForSeconds(0.8f);
-        GetComponentInChildren<Weapon>(true).gameObject.SetActive(true);
+        activeWeapon = GetComponentInChildren<Weapon>(true);
+        activeWeapon.gameObject.SetActive(true);
         Destroy(closestWeapon);
         animator.SetInteger("state", 7);
         closestEnemy = FindClosestObject(enemies);
+        navMeshAgent.SetDestination(player.transform.position);
+        navMeshAgent.stoppingDistance = distanceToPlayer;
         isHoldingRifle = true;
     }
 

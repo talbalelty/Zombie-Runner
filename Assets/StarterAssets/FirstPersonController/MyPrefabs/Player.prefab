@@ -563,6 +563,10 @@ PrefabInstance:
       propertyPath: far clip plane
       value: 500
       objectReference: {fileID: 0}
+    - target: {fileID: 9005220659476430821, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
+      propertyPath: orthographic size
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430823, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: m_Name
       value: MainCamera
@@ -599,6 +603,10 @@ PrefabInstance:
       propertyPath: ammoSlot
       value: 
       objectReference: {fileID: 5934561869115688832}
+    - target: {fileID: 340375681, guid: 156a14e5c36d8e84889cc1be3559ba39, type: 3}
+      propertyPath: fireSource
+      value: 
+      objectReference: {fileID: 1700936242146457874}
     - target: {fileID: 2337074158996965286, guid: 156a14e5c36d8e84889cc1be3559ba39, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -673,6 +681,10 @@ PrefabInstance:
       propertyPath: ammoSlot
       value: 
       objectReference: {fileID: 5934561869115688832}
+    - target: {fileID: 340375681, guid: a81202d39b9991c49bb89ad4091908e0, type: 3}
+      propertyPath: fireSource
+      value: 
+      objectReference: {fileID: 1700936242146457874}
     - target: {fileID: 2337074158996965286, guid: a81202d39b9991c49bb89ad4091908e0, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -747,6 +759,10 @@ PrefabInstance:
       propertyPath: ammoSlot
       value: 
       objectReference: {fileID: 5934561869115688832}
+    - target: {fileID: 340375681, guid: ada2587319194f542957a8c2ae277cb9, type: 3}
+      propertyPath: fireSource
+      value: 
+      objectReference: {fileID: 1700936242146457874}
     - target: {fileID: 2337074158996965286, guid: ada2587319194f542957a8c2ae277cb9, type: 3}
       propertyPath: m_RootOrder
       value: 1

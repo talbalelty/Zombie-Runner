@@ -15,7 +15,7 @@ public class Weapon : MonoBehaviour
 
     [Header("Player Assets")]
     [Tooltip("Player Main Camera with CinemachineBrain")]
-    [SerializeField] Camera FPCamera;
+    [SerializeField] GameObject fireSource;
     [SerializeField] Ammo ammoSlot;
 
     StarterAssetsInputs _input;
@@ -32,14 +32,14 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_input.fire)
+        if (_input != null && _input.fire)
         {
             Shoot();
+            _input.fire = false;
         }
-        _input.fire = false;
     }
 
-    void Shoot()
+    public void Shoot()
     {
         if (ammoSlot.GetAmmoAmount() > 0)
         {
@@ -60,7 +60,7 @@ public class Weapon : MonoBehaviour
     void ProcessRaycast()
     {
         RaycastHit hit;
-        if (Physics.Raycast(FPCamera.transform.position, FPCamera.transform.forward, out hit, range))
+        if (Physics.Raycast(fireSource.transform.position, fireSource.transform.forward, out hit, range))
         {
             HitImpact(hit);
             EnemyHealth target = hit.transform.GetComponent<EnemyHealth>();

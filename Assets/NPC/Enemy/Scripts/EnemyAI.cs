@@ -148,4 +148,12 @@ public class EnemyAI : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, chaseRange);
     }
+
+    public bool IsAlive
+    {
+        get
+        {
+            return isAlive;
+        }
+    }
 }
