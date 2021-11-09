@@ -13,7 +13,7 @@ public class FriendlyAI : MonoBehaviour
     [SerializeField] float attackRange = 20f;
     [SerializeField] float distanceToPlayer = 7f;
     [SerializeField] GameObject[] weapons;
-    [SerializeField] GameObject[] enemies;
+    [SerializeField] List<GameObject> enemies;
 
     GameObject player;
     NavMeshAgent navMeshAgent;
@@ -32,7 +32,7 @@ public class FriendlyAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        closestWeapon = FindClosestObject(weapons);
+        closestWeapon = FindClosestWeapon(weapons);
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.SetDestination(closestWeapon.transform.position);
 
@@ -47,11 +47,11 @@ public class FriendlyAI : MonoBehaviour
     {
         if (isHoldingRifle)
         {
-            closestEnemy = FindClosestObject(enemies);
-            if (closestEnemy != null)
+            navMeshAgent.SetDestination(player.transform.position);
+            if (navMeshAgent.remainingDistance <= distanceToPlayer)
             {
-                distanceToTarget = Vector3.Distance(transform.position, closestEnemy.transform.position);
-                if (closestEnemy.GetComponent<EnemyAI>().IsAlive && distanceToTarget <= attackRange)
+                closestEnemy = FindClosestEnemy(enemies);
+                if (closestEnemy != null && distanceToTarget <= attackRange)
                 {
                     navMeshAgent.isStopped = true;
                     animator.SetInteger("state", 8);
@@ -60,17 +60,13 @@ public class FriendlyAI : MonoBehaviour
                 }
                 else
                 {
-                    navMeshAgent.isStopped = false;
-                    navMeshAgent.SetDestination(player.transform.position);
-                    if (navMeshAgent.remainingDistance <= distanceToPlayer)
-                    {
-                        animator.SetInteger("state", 9);
-                    }
-                    else
-                    {
-                        animator.SetInteger("state", 7);
-                    }
+                    animator.SetInteger("state", 9);
                 }
+            }
+            else
+            {
+                navMeshAgent.isStopped = false;
+                animator.SetInteger("state", 7);
             }
         }
         else if (navMeshAgent.remainingDistance <= 3f && !isHoldingRifle)
@@ -98,7 +94,7 @@ public class FriendlyAI : MonoBehaviour
     void FaceTarget()
     {
         Vector3 direction = (closestEnemy.transform.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
     }
 
@@ -110,23 +106,41 @@ public class FriendlyAI : MonoBehaviour
         activeWeapon.gameObject.SetActive(true);
         Destroy(closestWeapon);
         animator.SetInteger("state", 7);
-        closestEnemy = FindClosestObject(enemies);
+        closestEnemy = FindClosestEnemy(enemies);
         navMeshAgent.SetDestination(player.transform.position);
         navMeshAgent.stoppingDistance = distanceToPlayer;
         isHoldingRifle = true;
     }
 
-    GameObject FindClosestObject(GameObject[] objects)
+    GameObject FindClosestEnemy(List<GameObject> objects)
     {
         distanceToTarget = Mathf.Infinity;
         GameObject closestObject = null;
-        foreach (GameObject weapon in objects)
+        foreach (GameObject obj in objects)
         {
-            float temp = Vector3.Distance(transform.position, weapon.transform.position);
+            if (obj != null)
+            {
+                float temp = Vector3.Distance(transform.position, obj.transform.position);
+                if (temp < distanceToTarget)
+                {
+                    distanceToTarget = temp;
+                    closestObject = obj;
+                }
+            }
+        }
+        return closestObject;
+    }
+    GameObject FindClosestWeapon(GameObject[] objects)
+    {
+        distanceToTarget = Mathf.Infinity;
+        GameObject closestObject = null;
+        foreach (GameObject obj in objects)
+        {
+            float temp = Vector3.Distance(transform.position, obj.transform.position);
             if (temp < distanceToTarget)
             {
                 distanceToTarget = temp;
-                closestObject = weapon;
+                closestObject = obj;
             }
         }
         return closestObject;

@@ -12,6 +12,7 @@ public class Weapon : MonoBehaviour
     [Header("Weapon Assets")]
     [Tooltip("Partile effect on bullet impact")]
     [SerializeField] ParticleSystem hitVFX;
+    [SerializeField] AudioClip shootSFX;
 
     [Header("Player Assets")]
     [Tooltip("Player Main Camera with CinemachineBrain")]
@@ -20,6 +21,7 @@ public class Weapon : MonoBehaviour
 
     StarterAssetsInputs _input;
     ParticleSystem muzzleFlash;
+    AudioSource audioSource;
     bool pickedUp;
 
     // Start is called before the first frame update
@@ -27,6 +29,7 @@ public class Weapon : MonoBehaviour
     {
         _input = GetComponentInParent<StarterAssetsInputs>();
         muzzleFlash = GetComponentInChildren<ParticleSystem>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -44,6 +47,8 @@ public class Weapon : MonoBehaviour
         if (ammoSlot.GetAmmoAmount() > 0)
         {
             ammoSlot.ReduceAmmoAmount();
+            audioSource.clip = shootSFX;
+            audioSource.Play();
             PlayMuzzleFlash();
             ProcessRaycast();
         }

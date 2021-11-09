@@ -10,9 +10,9 @@ public class EnemyAI : MonoBehaviour
     [Header("Movement")]
     [Tooltip("Enemy's rotation speed when attacking")]
     [SerializeField] float turnSpeed = 4f;
+    [SerializeField] GameObject enemyRifle;
 
     GameObject target;
-    GameObject enemyRifle;
     NavMeshAgent navMeshAgent;
     Animator animator;
     float distanceToTarget = Mathf.Infinity;
@@ -24,7 +24,6 @@ public class EnemyAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemyRifle = GameObject.FindGameObjectWithTag("Enemy Rifle");
         target = GameObject.FindGameObjectWithTag("Player");
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -69,17 +68,17 @@ public class EnemyAI : MonoBehaviour
         navMeshAgent.isStopped = false;
         animator.SetInteger("state", 7);
         isProvoked = true;
-
     }
 
     public void OnDeath()
     {
         animator.SetInteger("state", 4);
+        navMeshAgent.SetDestination(transform.position);
         navMeshAgent.isStopped = true;
         isProvoked = false;
         isAlive = false;
         GetComponentInChildren<Weapon>(true).gameObject.SetActive(false);
-        Destroy(gameObject, 10f);
+        Destroy(gameObject, 4f);
     }
 
     void EngageTarget()
