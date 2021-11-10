@@ -30,6 +30,10 @@ public class Weapon : MonoBehaviour
         _input = GetComponentInParent<StarterAssetsInputs>();
         muzzleFlash = GetComponentInChildren<ParticleSystem>();
         audioSource = GetComponent<AudioSource>();
+        if (_input != null)
+        {
+            _input.fire = false;
+        }
     }
 
     // Update is called once per frame
@@ -72,7 +76,15 @@ public class Weapon : MonoBehaviour
             if (target != null)
             {
                 target.TakeDamage(weaponDamage);
+                return;
             }
+
+            PlayerHealth targetPlayer = hit.transform.GetComponent<PlayerHealth>();
+            if (targetPlayer != null)
+            {
+                targetPlayer.TakeDamage(weaponDamage);
+            }
+
         }
     }
 

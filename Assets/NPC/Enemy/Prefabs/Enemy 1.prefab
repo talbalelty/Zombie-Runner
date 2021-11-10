@@ -1166,6 +1166,7 @@ GameObject:
   - component: {fileID: 3726879770285553585}
   - component: {fileID: 3726879770285553586}
   - component: {fileID: 3726879770285553587}
+  - component: {fileID: 7041375334470000781}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Untagged
@@ -1236,7 +1237,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 200
-  m_StoppingDistance: 0
+  m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1257,7 +1258,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseRange: 15
+  attackRange: 20
+  fireRate: 2
   turnSpeed: 4
+  enemyRifle: {fileID: 0}
 --- !u!114 &3726879770285553586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1284,6 +1288,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+--- !u!114 &7041375334470000781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4573933968913597074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 747c96cfd0514784a95e601fa4dadde2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoAmount: 9999
+  grenadeAmmoAmount: 0
+  maxGrenadeAmmoAmount: 0
 --- !u!1 &5056048409415595856
 GameObject:
   m_ObjectHideFlags: 0
@@ -2335,9 +2354,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 595691186464043880}
     m_Modifications:
     - target: {fileID: 340375681, guid: ada2587319194f542957a8c2ae277cb9, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: ammoSlot
+      value: 
+      objectReference: {fileID: 7041375334470000781}
+    - target: {fileID: 340375681, guid: ada2587319194f542957a8c2ae277cb9, type: 3}
+      propertyPath: fireSource
+      value: 
+      objectReference: {fileID: 3440578442718422130}
     - target: {fileID: 2337074158996965286, guid: ada2587319194f542957a8c2ae277cb9, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2400,7 +2423,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2337074158997199750, guid: ada2587319194f542957a8c2ae277cb9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ada2587319194f542957a8c2ae277cb9, type: 3}

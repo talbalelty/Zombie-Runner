@@ -9,10 +9,11 @@ public class FriendlyAI : MonoBehaviour
     [Header("Movement")]
     [Tooltip("Enemy's rotation speed when attacking")]
     [SerializeField] float turnSpeed = 4f;
+    [SerializeField] float fireRate = 2f;
     [Tooltip("Start chase if Player is inside the enemy's radius")]
     [SerializeField] float attackRange = 20f;
     [SerializeField] float distanceToPlayer = 7f;
-    [SerializeField] GameObject[] weapons;
+    [SerializeField] List<GameObject> weapons;
     [SerializeField] List<GameObject> enemies;
 
     GameObject player;
@@ -32,7 +33,7 @@ public class FriendlyAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        closestWeapon = FindClosestWeapon(weapons);
+        closestWeapon = FindClosestObject(weapons);
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.SetDestination(closestWeapon.transform.position);
 
@@ -50,13 +51,14 @@ public class FriendlyAI : MonoBehaviour
             navMeshAgent.SetDestination(player.transform.position);
             if (navMeshAgent.remainingDistance <= distanceToPlayer)
             {
-                closestEnemy = FindClosestEnemy(enemies);
+                closestEnemy = FindClosestObject(enemies);
                 if (closestEnemy != null && distanceToTarget <= attackRange)
                 {
-                    navMeshAgent.isStopped = true;
-                    animator.SetInteger("state", 8);
                     FaceTarget();
-                    AttackTarget();
+                    if (!fired)
+                    {
+                        StartCoroutine(AttackTarget());
+                    }
                 }
                 else
                 {
@@ -75,24 +77,20 @@ public class FriendlyAI : MonoBehaviour
         }
     }
 
-    void AttackTarget()
+    IEnumerator AttackTarget()
     {
-        if (Mathf.FloorToInt(Time.realtimeSinceStartup) % 2 == 0)
-        {
-            if (!fired)
-            {
-                activeWeapon.Shoot();
-                fired = true;
-            }
-        }
-        else
-        {
-            fired = false;
-        }
+        fired = true;
+        animator.SetInteger("state", 8);
+        activeWeapon.Shoot();
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        animator.SetInteger("state", 9);
+        yield return new WaitForSeconds(fireRate);
+        fired = false;
     }
 
     void FaceTarget()
     {
+        navMeshAgent.isStopped = true;
         Vector3 direction = (closestEnemy.transform.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
@@ -106,13 +104,12 @@ public class FriendlyAI : MonoBehaviour
         activeWeapon.gameObject.SetActive(true);
         Destroy(closestWeapon);
         animator.SetInteger("state", 7);
-        closestEnemy = FindClosestEnemy(enemies);
         navMeshAgent.SetDestination(player.transform.position);
         navMeshAgent.stoppingDistance = distanceToPlayer;
         isHoldingRifle = true;
     }
 
-    GameObject FindClosestEnemy(List<GameObject> objects)
+    GameObject FindClosestObject(List<GameObject> objects)
     {
         distanceToTarget = Mathf.Infinity;
         GameObject closestObject = null;
@@ -126,21 +123,6 @@ public class FriendlyAI : MonoBehaviour
                     distanceToTarget = temp;
                     closestObject = obj;
                 }
-            }
-        }
-        return closestObject;
-    }
-    GameObject FindClosestWeapon(GameObject[] objects)
-    {
-        distanceToTarget = Mathf.Infinity;
-        GameObject closestObject = null;
-        foreach (GameObject obj in objects)
-        {
-            float temp = Vector3.Distance(transform.position, obj.transform.position);
-            if (temp < distanceToTarget)
-            {
-                distanceToTarget = temp;
-                closestObject = obj;
             }
         }
         return closestObject;

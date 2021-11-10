@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 namespace StarterAssets
 {
-	[RequireComponent(typeof(CharacterController))]
+	[RequireComponent(typeof(CharacterController), typeof(AudioSource))]
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 	[RequireComponent(typeof(PlayerInput))]
 #endif
@@ -54,6 +54,11 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
+		[Header("Expansions")]
+		[SerializeField] AudioClip footstepSFX;
+		[SerializeField] AudioClip jumpSFX;
+		[SerializeField] AudioClip landSFX;
+
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
@@ -71,6 +76,10 @@ namespace StarterAssets
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
 
+		// expansions
+		private AudioSource audioSource;
+		private bool fallFlag = false;
+
 		private const float _threshold = 0.01f;
 
 		private void Awake()
@@ -86,6 +95,7 @@ namespace StarterAssets
 		{
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
+			audioSource = GetComponent<AudioSource>();
 
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
@@ -171,6 +181,13 @@ namespace StarterAssets
 			{
 				// move
 				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
+
+				// play footstep sound
+				if (!audioSource.isPlaying && Grounded)
+				{
+					audioSource.clip = footstepSFX;
+					audioSource.Play();
+				}
 			}
 
 			// move the player
@@ -188,19 +205,34 @@ namespace StarterAssets
 				if (_verticalVelocity < 0.0f)
 				{
 					_verticalVelocity = -2f;
-				}
+                }
 
-				// Jump
-				if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+                // Jump
+                if (_input.jump && _jumpTimeoutDelta <= 0.0f)
 				{
 					// the square root of H * -2 * G = how much velocity needed to reach desired height
 					_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-				}
+
+                    // play jump sound
+                    if (audioSource.clip != jumpSFX)
+                    {
+						audioSource.clip = jumpSFX;
+						audioSource.Play();
+                    }
+                }
 
 				// jump timeout
 				if (_jumpTimeoutDelta >= 0.0f)
 				{
 					_jumpTimeoutDelta -= Time.deltaTime;
+				}
+
+				// play land sound
+				if (fallFlag)
+				{
+					fallFlag = false;
+					audioSource.clip = landSFX;
+					audioSource.Play();
 				}
 			}
 			else
@@ -216,6 +248,9 @@ namespace StarterAssets
 
 				// if we are not grounded, do not jump
 				_input.jump = false;
+
+				// used to play landSFX once
+				fallFlag = true;
 			}
 
 			// apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
