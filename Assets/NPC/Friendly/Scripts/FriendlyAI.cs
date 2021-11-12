@@ -98,6 +98,7 @@ public class FriendlyAI : MonoBehaviour
 
     IEnumerator playPickUpWeapon()
     {
+        navMeshAgent.isStopped = true;
         animator.SetInteger("state", 6);
         yield return new WaitForSeconds(0.8f);
         activeWeapon = GetComponentInChildren<Weapon>(true);

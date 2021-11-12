@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.UI;
+using TMPro;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class EnemyAI : MonoBehaviour
     [Tooltip("Enemy's rotation speed when attacking")]
     [SerializeField] float turnSpeed = 4f;
     [SerializeField] GameObject enemyRifle;
+    [SerializeField] TextMeshProUGUI chaseText;
 
     GameObject target;
     NavMeshAgent navMeshAgent;
@@ -121,6 +124,11 @@ public class EnemyAI : MonoBehaviour
         if (distanceToTarget <= 3)
         {
             StartCoroutine(playPickUpWeapon());
+            if (chaseText != null && !chaseText.gameObject.activeSelf)
+            {
+                chaseText.gameObject.SetActive(true);
+                Destroy(chaseText.gameObject, 4f);
+            }
         }
         else
         {
